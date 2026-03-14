@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Trumpet Simulator</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.js"></script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div class="hero-top">
+          <div class="brand">Brass Lab</div>
+          <div class="status" id="audioStatus">Audio locked</div>
+        </div>
+        <h1>Trumpet Simulator</h1>
+        <p>
+          Press valve keys to change tube length and tap harmonic levels to step
+          through the harmonic series. Notes update instantly.
+        </p>
+        <div class="actions">
+          <button id="audioBtn" class="btn primary">Start Audio</button>
+          <button id="resetBtn" class="btn ghost">Reset Harmonic</button>
+        </div>
+      </header>
+
+      <section class="panel readouts">
+        <div class="readout">
+          <div class="label">Harmonic Level</div>
+          <div class="value" id="harmonicLevel">0</div>
+          <div class="helper">W / S</div>
+        </div>
+        <div class="readout">
+          <div class="label">Base Note</div>
+          <div class="value" id="baseNote">C4</div>
+          <div class="helper">Series: C G C E G C</div>
+        </div>
+        <div class="readout highlight">
+          <div class="label">Final Note</div>
+          <div class="value" id="finalNote">C4</div>
+          <div class="helper">With valve offset</div>
+        </div>
+        <div class="readout">
+          <div class="label">Valve Offset</div>
+          <div class="value" id="valveOffset">0</div>
+          <div class="helper">Semitones</div>
+        </div>
+      </section>
+
+      <section class="panel staff">
+        <div class="staff-header">
+          <div class="label">Staff</div>
+          <div class="staff-note" id="staffNote">C4</div>
+        </div>
+        <canvas id="staffCanvas" width="640" height="200"></canvas>
+      </section>
+
+      <section class="panel keys">
+        <div class="key-block">
+          <div class="keycap" data-key="J">J</div>
+          <div class="key-info">Valve 1 (-2)</div>
+        </div>
+        <div class="key-block">
+          <div class="keycap" data-key="K">K</div>
+          <div class="key-info">Valve 2 (-1)</div>
+        </div>
+        <div class="key-block">
+          <div class="keycap" data-key="L">L</div>
+          <div class="key-info">Valve 3 (-3)</div>
+        </div>
+        <div class="key-block">
+          <div class="keycap" data-key="W">W</div>
+          <div class="key-info">Harmonic Up</div>
+        </div>
+        <div class="key-block">
+          <div class="keycap" data-key="S">S</div>
+          <div class="key-info">Harmonic Down</div>
+        </div>
+        <div class="key-block">
+          <div class="keycap" data-key="Shift">Shift</div>
+          <div class="key-info">Retrigger Note</div>
+        </div>
+      </section>
+
+      <section class="panel combo">
+        <div class="combo-line">
+          Valve combination: <span id="combo">000</span>
+        </div>
+        <div class="combo-line">
+          Pressed keys: <span id="pressedKeys">None</span>
+        </div>
+      </section>
+
+      <section class="panel metronome">
+        <div class="metronome-head">
+          <div>
+            <div class="label">Metronome</div>
+            <div class="value" id="bpmValue">90 BPM</div>
+          </div>
+          <button id="metroBtn" class="btn ghost">Start Metronome</button>
+        </div>
+        <input id="bpmSlider" type="range" min="40" max="220" step="1" value="90" />
+        <div class="metronome-ticks" aria-hidden="true">
+          <span class="tick" data-beat="1"></span>
+          <span class="tick" data-beat="2"></span>
+          <span class="tick" data-beat="3"></span>
+          <span class="tick" data-beat="4"></span>
+        </div>
+      </section>
+
+      <section class="panel guide">
+        <h2>How It Works</h2>
+        <ul>
+          <li>Valves lower pitch by fixed semitone amounts.</li>
+          <li>Harmonics choose the base note from the series.</li>
+          <li>Final note = harmonic base - valve offset.</li>
+        </ul>
+        <div class="series">
+          <div class="series-title">Harmonic Series (Base)</div>
+          <div class="series-notes">C -> G -> C -> E -> G -> C</div>
+        </div>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>
